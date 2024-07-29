@@ -7,19 +7,20 @@ class Solution {
         Arrays.sort(nums);
 
         while(left<right){
-            if(nums[left]+nums[right]>k){
-                right --;
-                
-            }
-            else if(nums[left]+nums[right]<k){
+            int sum = nums[left]+nums[right];
+
+            if(sum<k){
                 left++;
+            }
+            else if(sum>k){
+                right--;
             }
             else{
                 left++;
                 right--;
                 count++;
             }
-        }
-        return count;
     }
+    return count;
+}
 }
