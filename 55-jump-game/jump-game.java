@@ -7,7 +7,7 @@ class Solution {
                 return false;
             }
             reachable = Math.max(reachable, i + nums[i]);
-            if(reachable== nums.length-1){
+            if(reachable>= nums.length-1){
                 break;
             }
         }
