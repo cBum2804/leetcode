@@ -1,33 +1,36 @@
 class Solution(object):
     def floodFill(self, image, sr, sc, color):
        
-        rows,cols = len(image), len(image[0])
-        def neighbours(row,col, initial_color):
-            rowD = [-1,0,1,0]
-            colD = [0,-1,0,1]
+        rows, cols= len(image), len(image[0])
+        initial_color = image[sr][sc]
+        if image[sr][sc]==color:
+            return image
+        
+        def get_neighbour(x,y):
+          rowD = [-1,0,1,0]
+          colD = [0,-1,0,1]
 
-            for x in range(len(colD)):
-                neighbour_row = row+rowD[x]
-                neighbour_col = col+colD[x]
+          for i in range(len(rowD)):
+            neighbour_row = x+rowD[i]
+            neighbour_col = y+colD[i] 
+            if neighbour_row >=0 and neighbour_row< rows and neighbour_col>=0 and neighbour_col< cols:
+                if image[neighbour_row][neighbour_col] == initial_color:
+                    yield neighbour_row, neighbour_col
 
-                if neighbour_row>=0 and neighbour_row < rows and neighbour_col>=0 and neighbour_col< cols:
-                    if image[neighbour_row][neighbour_col]== initial_color:
-                        yield neighbour_row, neighbour_col
-        def bfs(sr, sc):
+        def bfs(i, j):
             queue = deque()
-            queue.append((sr,sc))
             seen = set()
-            seen.add((sr,sc))
-            initial_color = image[sr][sc]
-            image[sr][sc] = color
+            queue.append((i,j))
+            seen.add((i,j))
+            image[i][j] = color
 
             while queue:
-                current = queue.popleft()
-                for i,j in neighbours(current[0],current[1],initial_color):
-                    if (i,j) not in seen:
-                        seen.add((i,j))
-                        queue.append((i,j))
-                        image[i][j] = color
-        bfs(sr, sc)
-        return image        
+                current = queue.pop()
 
+                for x,y in get_neighbour(current[0], current[1]):
+                    if (x,y) not in seen:
+                        seen.add((x,y))
+                        queue.append((x,y))
+                        image[x][y] = color
+        bfs(sr,sc)
+        return image
