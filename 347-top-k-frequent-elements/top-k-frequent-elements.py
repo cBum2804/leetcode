@@ -1,11 +1,17 @@
 class Solution(object):
     def topKFrequent(self, nums, k):
         counter = Counter(nums)
+        mapper = [0]* (len(nums)+1)
         result = []
-        for key, val in counter.items():
-            if len(result)< k:
-                heapq.heappush(result, (val,key))
+        for key, freq in counter.items():
+            if mapper[freq]==0:
+                mapper[freq] = [key]
             else:
-                heapq.heappushpop(result,(val,key))
-        return [h[1] for h in result]
+                mapper[freq].append(key)
         
+        for i in range(len(nums),-1,-1):
+            if mapper[i]!=0:
+                result.extend(mapper[i])
+            if len(result)==k:
+                break
+        return result
