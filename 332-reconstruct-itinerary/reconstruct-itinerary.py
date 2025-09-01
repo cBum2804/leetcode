@@ -9,10 +9,15 @@ class Solution(object):
         stack.append("JFK")
         
         while stack:
-            while adj_list[stack[-1]]:   
-                next_dst = heapq.heappop(adj_list[stack[-1]])
-                stack.append(next_dst)
-            result.append(stack.pop())   
+            curr = stack.pop()  
+            while adj_list[curr]:
+                next_dst = heapq.heappop(adj_list[curr])
+                stack.append(curr)     
+                stack.append(next_dst) 
+                break                  
+            else:
+                
+                result.append(curr)
 
         return result[::-1]
         
